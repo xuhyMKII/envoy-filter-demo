@@ -30,4 +30,4 @@
 
 [`BUILD`](BUILD)文件引入了一个新的Envoy静态二进制目标`envoy`，它将新的过滤器和`@envoy//source/exe:envoy_main_entry_lib`链接在一起。`echo2`过滤器在Envoy二进制的静态初始化阶段注册自己作为一个新的过滤器。
 
-更多关于如何编写和使用HTTP过滤器的信息，请参考[这里](http-filter-example)。
+

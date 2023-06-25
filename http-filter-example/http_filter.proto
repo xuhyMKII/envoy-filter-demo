@@ -8,3 +8,35 @@ message Decoder {
     string key = 1 [(validate.rules).string.min_bytes = 1];
     string val = 2 [(validate.rules).string.min_bytes = 1];
 }
+
+
+// 在这个http_filter.proto文件中，Decoder并不是一个方法，
+// 而是一个protobuf消息类型。这个消息类型定义了HttpSampleDecoderFilter过滤器的配置格式。
+// 当Envoy启动并加载过滤器时，它会读取配置文件，然后使用这个配置文件中的数据创建一个Decoder消息，
+// 这个消息然后被传递给过滤器的构造函数。
+
+// 在这个过程中，并没有涉及到任何的远程调用或者服务器。
+// 所有的操作都是在Envoy的本地进程中完成的。
+// Decoder消息只是一种数据格式，它被用于在Envoy和过滤器之间传递配置数据。
+
+
+message Echo2Config {
+    string key = 1 [(validate.rules).string.min_bytes = 1];
+    string val = 2 [(validate.rules).string.min_bytes = 1];
+}
+
+// 这个Echo2Config消息类型就可以用于配置Echo2过滤器。
+// 在Envoy的配置文件中，可以为Echo2过滤器提供一个Echo2Config消息，
+// 这个消息包含key和val字段的值。然后，当Envoy启动并加载过滤器时，
+// 它会读取这个配置消息，然后使用这个消息来创建和配置Echo2过滤器的实例。
+
+// 在配置文件中，可以为每个过滤器提供一个配置对象，
+// 这个配置对象的格式应该与过滤器的配置protobuf消息相匹配。
+// Envoy在启动时会读取这个配置文件，并将其中的配置对象转换为protobuf消息。
+
+// filters:
+// - name: echo2
+//   typed_config:
+//     "@type": type.googleapis.com/your.package.Echo2Config
+//     key: your_key
+//     val: your_val

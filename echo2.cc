@@ -12,7 +12,7 @@
 
 #include "source/common/common/assert.h"
 
-    namespace Envoy {
+namespace Envoy {
 namespace Filter {
 
 Network::FilterStatus Echo2::onData(Buffer::Instance& data, bool) {
@@ -62,7 +62,8 @@ Network::FilterStatus Echo2::onData(Buffer::Instance& data, bool) {
 
 //   Network::FilterStatus onData(Buffer::Instance& data, bool) override {
 //     ENVOY_CONN_LOG(trace, "echo: got {} bytes", read_callbacks_->connection(), data.length());
-//     ENVOY_CONN_LOG(trace, "param1: {}, param2: {}", read_callbacks_->connection(), config_.param1(),
+//     ENVOY_CONN_LOG(trace, "param1: {}, param2: {}", read_callbacks_->connection(),
+//     config_.param1(),
 //                    config_.param2());
 //     read_callbacks_->connection().write(data, false);
 //     return Network::FilterStatus::StopIteration;

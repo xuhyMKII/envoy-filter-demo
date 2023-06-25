@@ -29,5 +29,3 @@
 [Envoy仓库](https://github.com/envoyproxy/envoy/)作为一个子模块提供。[`WORKSPACE`](WORKSPACE)文件将`@envoy`仓库映射到这个本地路径。
 
 [`BUILD`](BUILD)文件引入了一个新的Envoy静态二进制目标`envoy`，它将新的过滤器和`@envoy//source/exe:envoy_main_entry_lib`链接在一起。`echo2`过滤器在Envoy二进制的静态初始化阶段注册自己作为一个新的过滤器。
-
-

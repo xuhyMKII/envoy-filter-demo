@@ -1,2 +1,8 @@
+; 配置Bazel构建系统
+
+; 导入了Envoy项目中的.bazelrc文件。这意味着这个项目会使用Envoy的Bazel配置。
+
 import %workspace%/envoy/.bazelrc
+
+; 设置了构建时的平台映射文件为envoy/bazel/platform_mappings
 build --platform_mappings=envoy/bazel/platform_mappings

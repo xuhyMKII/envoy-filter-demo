@@ -1,1 +1,11 @@
+; .bazelversion文件是用于指定Bazel的版本的文件。
+; 这个文件中通常只包含一个版本号，表示项目需要使用的Bazel版本。
+
+; .bazelversion文件是一个符号链接，它链接到envoy/.bazelversion。
+; 这意味着这个项目使用的Bazel版本和Envoy项目使用的版本是一致的。
+
+; 使用.bazelversion文件可以确保所有的开发者和CI系统都使用相同版本的Bazel，
+; 这有助于避免因为Bazel版本不一致导致的构建问题。
+
+
 ./envoy/.bazelversion

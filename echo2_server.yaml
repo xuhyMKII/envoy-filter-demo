@@ -1,10 +1,26 @@
+# Envoy的配置文件，它定义了Envoy服务器的行为和资源
+
+
+
+# admin：这部分定义了Envoy的管理接口的配置。
+# 管理接口提供了一些用于监控和管理Envoy的API。
+# 在这个文件中，管理接口被配置为监听在127.0.0.1的一个随机端口上，
+# 访问日志被禁用（access_log_path设置为/dev/null）。
 admin:
   access_log_path: /dev/null
   address:
     socket_address:
       address: 127.0.0.1
       port_value: 0
+
+# static_resources：这部分定义了Envoy的静态资源，包括集群（clusters）和监听器（listeners）。
+# 集群是Envoy用来路由请求的上游服务的集合。监听器是Envoy用来接收下游请求的接口。
 static_resources:
+  
+# clusters：这个文件中定义了一个名为cluster_0的集群，它的连接超时时间为0.25秒，
+# 负载均衡端点为127.0.0.1的一个随机端口。  
+# 指向的后端服务。具体来说，cluster_0定义了后端服务的网络地址（127.0.0.1和一个随机端口），
+# 以及连接到这个服务的超时时间（0.25s）。
   clusters:
     name: cluster_0
     connect_timeout: 0.25s
@@ -17,6 +33,9 @@ static_resources:
                   socket_address:
                     address: 127.0.0.1
                     port_value: 0
+# listeners：这个文件中定义了一个名为listener_0的监听器，它监听在127.0.0.1的一个随机端口上。
+# 这个监听器有一个过滤器链，其中包含一个echo2过滤器。
+# 过滤器的配置（typed_config）在这个文件中没有给出，可能是在其他地方提供的。
   listeners:
     name: listener_0
     address:

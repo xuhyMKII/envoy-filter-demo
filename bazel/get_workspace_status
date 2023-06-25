@@ -1,0 +1,14 @@
+../envoy/bazel/get_workspace_status
+
+
+; 这个文件是一个符号链接，它链接到Envoy项目的同名文件。这个文件是Bazel的一个钩子（hook），它会在Bazel构建时被调用，用于获取工作区的状态。
+
+; 在Bazel构建系统中，get_workspace_status是一个特殊的脚本，它在构建过程中被调用，用于获取工作区的状态信息。这些信息可以被用于生成一些动态的构建输出，例如包含版本号或构建时间的文件。
+
+; 当你运行Bazel构建命令时，Bazel会查找名为get_workspace_status的脚本，并运行它。这个脚本应该输出一系列的键值对，每一对键值对占一行，键和值之间用空格分隔。这些键值对定义了工作区的状态。
+
+; 在"envoy-filter-example"项目中，bazel/get_workspace_status是一个符号链接，它链接到Envoy项目的同名文件。这意味着当你在这个项目中运行Bazel构建命令时，Bazel会运行Envoy的get_workspace_status脚本来获取工作区的状态。
+
+; 这个设计允许"envoy-filter-example"项目在构建过程中使用Envoy的工作区状态。例如，如果Envoy的get_workspace_status脚本输出了Envoy的版本号，那么"envoy-filter-example"项目就可以在其构建输出中包含这个版本号。
+
+; 需要注意的是，get_workspace_status脚本的具体内容和行为取决于具体的项目。在Envoy项目中，这个脚本可能会输出一些关于Envoy的信息，例如版本号、构建时间等。在其他项目中，这个脚本可能会有不同的行为。

@@ -1,0 +1,64 @@
+
+# 这是GitHub Actions的配置文件，用于定义GitHub Actions的CI/CD流程。
+# 这个文件定义了一个工作流，这个工作流会同步Envoy的最新代码到这个项目的Envoy子模块，
+# 并更新WORKSPACE文件。
+
+# 这个项目中有一个空的envoy子模块，这是因为这个项目需要和Envoy的源代码一起编译。envoy子模块会在CI/CD流程中被同步到Envoy的最新代码。
+
+# 当你在Istio中使用Envoy时，你实际上使用的是包含了一些预编译的过滤器的Envoy。这些过滤器可能包括Istio自己的过滤器，以及其他一些通用的过滤器。
+
+# 这个项目不仅仅是编译这个过滤器，而是将这个过滤器和Envoy一起编译。这是因为Envoy的过滤器需要和Envoy的核心代码一起编译，以便它们可以正确地链接到Envoy的二进制文件中。
+
+# 这种设计使得Envoy可以高效地运行过滤器，因为过滤器的代码可以直接访问Envoy的内部数据结构和API。然而，这也意味着添加或更新过滤器需要重新编译Envoy。
+
+
+
+name: Sync Envoy
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: write
+    if: |
+      ${{
+          !contains(github.actor, '[bot]')
+          || github.actor == 'sync-envoy[bot]'
+      }}
+    steps:
+    - id: appauth
+      uses: envoyproxy/toolshed/gh-actions/appauth@actions-v0
+      with:
+        key: ${{ secrets.ENVOY_CI_UPDATE_BOT_KEY }}
+        app_id: ${{ secrets.ENVOY_CI_UPDATE_APP_ID }}
+
+    - name: 'Checkout Repository'
+      uses: actions/checkout@v3
+      with:
+        ref: main
+        token: ${{ steps.appauth.outputs.value }}
+
+    # Checkout the Envoy repo at latest commit
+    - name: 'Checkout Repository'
+      uses: actions/checkout@v3
+      with:
+        repository: envoyproxy/envoy
+        fetch-depth: 0
+        path: upstream
+    - run: mv upstream ../envoy
+
+    - run: ci/sync_envoy.sh
+      env:
+        ENVOY_SRC_DIR: ../envoy
+        GITHUB_EMAIL: "135279899+update-envoy[bot]@users.noreply.github.com"
+        GITHUB_NAME: "update-envoy[bot]"

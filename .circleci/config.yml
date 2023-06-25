@@ -1,0 +1,36 @@
+# 这是CircleCI的配置文件，用于定义CircleCI的持续集成/持续部署（CI/CD）流程。
+# 在这个文件中，定义了两个工作流：build和test。
+# build工作流会构建项目，test工作流会运行项目的测试。
+
+
+
+references:
+  envoy-build-image: &envoy-build-image
+    envoyproxy/envoy-build:latest
+
+version: 2
+jobs:
+  build:
+    docker:
+      - image: *envoy-build-image
+    resource_class: xlarge
+    steps:
+      - checkout
+      - run: git submodule update --init
+      - run: ./ci/do_ci.sh build
+  test:
+    docker:
+      - image: *envoy-build-image
+    resource_class: xlarge
+    steps:
+      - checkout
+      - run: git submodule update --init
+      - run: ./ci/do_ci.sh test
+
+workflows:
+  version: 2
+  all:
+    jobs:
+      - build
+      - test
+
